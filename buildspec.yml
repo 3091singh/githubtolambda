@@ -6,6 +6,7 @@ phases:
     commands:
       - echo "Installing dependencies..."
       - pip install -r requirements.txt -t lib
+
   build:
     commands:
       - echo "Zipping deployment package..."
@@ -13,8 +14,57 @@ phases:
       - zip -r9 ../deployment_package.zip .
       - cd ..
       - zip -g deployment_package.zip lambda_function.py
-  post_build:
+
+  pre_unit_test:
     commands:
-      - echo "Updating lambda Function..."
+      - echo "Running pre-unit tests..."
+      # Add any pre-unit testing tasks (e.g., mocking setup)
+
+  unit_test:
+    commands:
+      - echo "Running unit tests..."
+      - python -m unittest discover tests/unit
+
+  post_unit_test:
+    commands:
+      - echo "Running post-unit tests..."
+      # Add any post-unit testing tasks (e.g., cleanup)
+
+  integration_test:
+    commands:
+      - echo "Running integration tests..."
+      # Add integration testing commands
+
+  post_integration_test:
+    commands:
+      - echo "Running post-integration tests..."
+      # Add any post-integration testing tasks
+
+  e2e_test:
+    commands:
+      - echo "Running end-to-end tests..."
+      # Add end-to-end testing commands
+
+  post_e2e_test:
+    commands:
+      - echo "Running post end-to-end tests..."
+      # Add any post end-to-end testing tasks
+
+  security_scan:
+    commands:
+      - echo "Running security scans..."
+      # Add security scanning commands (e.g., SAST)
+
+  post_security_scan:
+    commands:
+      - echo "Running post-security scan checks..."
+      # Add post-security scan checks (e.g., dependency vulnerability checks)
+
+  deploy:
+    commands:
+      - echo "Deploying to Lambda..."
       - aws lambda update-function-code --function-name githubtolambda --zip-file fileb://deployment_package.zip
       - echo "DONE!!"
+
+artifacts:
+  files: deployment_package.zip
