@@ -68,10 +68,7 @@ phases:
   post_build:
     commands:
       - echo "Running post-build tasks..."
-      # Add any post-build tasks here
-
-  deploy:
-    commands:
+      # Add any post-build tasks, including deployment
       - echo "Deploying to Lambda..."
       - aws lambda update-function-code --function-name githubtolambda --zip-file fileb://deployment_package.zip
       - echo "DONE!!"
