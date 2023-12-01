@@ -1,0 +1,26 @@
+<!-- templates/view.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSV File View</title>
+</head>
+<body>
+    <h1>CSV File View</h1>
+    {% if message %}
+        <p>{{ message }}</p>
+    {% else %}
+        <table border="1">
+            {% for row in data %}
+                <tr>
+                    {% for cell in row %}
+                        <td>{{ cell }}</td>
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+        </table>
+    {% endif %}
+</body>
+</html>
