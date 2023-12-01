@@ -1,5 +1,4 @@
 version: 0.2
-
 phases:
   install:
     runtime-versions:
@@ -7,12 +6,6 @@ phases:
     commands:
       - echo "Installing dependencies..."
       - pip install -r requirements.txt -t lib
-
-  pre_build:
-    commands:
-      - echo "Running pre-build tasks..."
-      # Add any pre-build tasks here
-
   build:
     commands:
       - echo "Zipping deployment package..."
@@ -20,29 +13,8 @@ phases:
       - zip -r9 ../deployment_package.zip .
       - cd ..
       - zip -g deployment_package.zip lambda_function.py
-
   post_build:
     commands:
-      - echo "Running post-build tasks..."
-      # Add any post-build tasks, including deployment
-      - echo "Deploying to Lambda..."
+      - echo "Updating lambda Function..."
       - aws lambda update-function-code --function-name githubtolambda --zip-file fileb://deployment_package.zip
       - echo "DONE!!"
-
-  pre_build_security:
-    commands:
-      - echo "Running pre-build security tasks..."
-      # Add any pre-build security tasks here
-
-  test:
-    commands:
-      - echo "Running tests..."
-      # Add testing commands (e.g., unit tests, integration tests, end-to-end tests)
-
-  post_build_security:
-    commands:
-      - echo "Running post-build security tasks..."
-      # Add post-build security tasks here
-
-artifacts:
-  files: deployment_package.zip
