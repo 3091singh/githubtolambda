@@ -7,6 +7,11 @@ phases:
       - echo "Installing dependencies..."
       - pip install -r requirements.txt -t lib
 
+  pre_build:
+    commands:
+      - echo "Running pre-build tasks..."
+      # Add any pre-build tasks here
+
   build:
     commands:
       - echo "Zipping deployment package..."
@@ -18,7 +23,7 @@ phases:
   pre_unit_test:
     commands:
       - echo "Running pre-unit tests..."
-      # Add any pre-unit testing tasks (e.g., mocking setup)
+      # Add any pre-unit testing tasks here
 
   unit_test:
     commands:
@@ -28,27 +33,27 @@ phases:
   post_unit_test:
     commands:
       - echo "Running post-unit tests..."
-      # Add any post-unit testing tasks (e.g., cleanup)
+      # Add any post-unit testing tasks here
 
   integration_test:
     commands:
       - echo "Running integration tests..."
-      # Add integration testing commands
+      # Add integration testing commands here
 
   post_integration_test:
     commands:
       - echo "Running post-integration tests..."
-      # Add any post-integration testing tasks
+      # Add any post-integration testing tasks here
 
   e2e_test:
     commands:
       - echo "Running end-to-end tests..."
-      # Add end-to-end testing commands
+      # Add end-to-end testing commands here
 
   post_e2e_test:
     commands:
       - echo "Running post end-to-end tests..."
-      # Add any post end-to-end testing tasks
+      # Add any post end-to-end testing tasks here
 
   security_scan:
     commands:
@@ -59,6 +64,11 @@ phases:
     commands:
       - echo "Running post-security scan checks..."
       # Add post-security scan checks (e.g., dependency vulnerability checks)
+
+  post_build:
+    commands:
+      - echo "Running post-build tasks..."
+      # Add any post-build tasks here
 
   deploy:
     commands:
