@@ -1,4 +1,5 @@
 version: 0.2
+
 phases:
   install:
     runtime-versions:
@@ -20,51 +21,6 @@ phases:
       - cd ..
       - zip -g deployment_package.zip lambda_function.py
 
-  pre_unit_test:
-    commands:
-      - echo "Running pre-unit tests..."
-      # Add any pre-unit testing tasks here
-
-  unit_test:
-    commands:
-      - echo "Running unit tests..."
-      - python -m unittest discover tests/unit
-
-  post_unit_test:
-    commands:
-      - echo "Running post-unit tests..."
-      # Add any post-unit testing tasks here
-
-  integration_test:
-    commands:
-      - echo "Running integration tests..."
-      # Add integration testing commands here
-
-  post_integration_test:
-    commands:
-      - echo "Running post-integration tests..."
-      # Add any post-integration testing tasks here
-
-  e2e_test:
-    commands:
-      - echo "Running end-to-end tests..."
-      # Add end-to-end testing commands here
-
-  post_e2e_test:
-    commands:
-      - echo "Running post end-to-end tests..."
-      # Add any post end-to-end testing tasks here
-
-  security_scan:
-    commands:
-      - echo "Running security scans..."
-      # Add security scanning commands (e.g., SAST)
-
-  post_security_scan:
-    commands:
-      - echo "Running post-security scan checks..."
-      # Add post-security scan checks (e.g., dependency vulnerability checks)
-
   post_build:
     commands:
       - echo "Running post-build tasks..."
@@ -72,6 +28,21 @@ phases:
       - echo "Deploying to Lambda..."
       - aws lambda update-function-code --function-name githubtolambda --zip-file fileb://deployment_package.zip
       - echo "DONE!!"
+
+  pre_build_security:
+    commands:
+      - echo "Running pre-build security tasks..."
+      # Add any pre-build security tasks here
+
+  test:
+    commands:
+      - echo "Running tests..."
+      # Add testing commands (e.g., unit tests, integration tests, end-to-end tests)
+
+  post_build_security:
+    commands:
+      - echo "Running post-build security tasks..."
+      # Add post-build security tasks here
 
 artifacts:
   files: deployment_package.zip
