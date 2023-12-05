@@ -18,7 +18,7 @@ phases:
   post_build:
     commands:
       - echo "Running tests..."
-      - python test.py  # Add the actual command to run your tests
+      - python test_script.py  # Add the actual command to run your tests
       - echo "Zipping deployment package..."
       - cd lib
       - zip -r9 ../deployment_package.zip .
