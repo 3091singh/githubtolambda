@@ -10,7 +10,7 @@ class TestLambdaHandler(unittest.TestCase):
                 {
                     's3': {
                         'bucket': {'name': 'satwinder'},
-                        'object': {'key': 'your_object_key.csv'}
+                        'object': {'key': 'test.csv'}
                     }
                 }
             ]
