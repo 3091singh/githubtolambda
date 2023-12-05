@@ -6,7 +6,6 @@ phases:
     commands:
       - echo "Installing dependencies..."
       - pip install -r requirements.txt -t lib
-
   build:
     commands:
       - echo "Zipping deployment package..."
@@ -14,27 +13,12 @@ phases:
       - zip -r9 ../deployment_package.zip .
       - cd ..
       - zip -g deployment_package.zip lambda_function.py
-
-  pre_deploy:
+  post_build:
     commands:
-      - echo "Running pre-deployment tasks..."
-      - python pre_deploy_script.py
-
-  deploy:
-    commands:
-      - echo "Deploying to AWS Lambda..."
+      - echo "Updating lambda Function..."
       - aws lambda update-function-code --function-name githubtolambda --zip-file fileb://deployment_package.zip
-      - echo "Updating Lambda environment variables..."
-      - aws lambda update-function-configuration --function-name githubtolambda --environment Variables={KEY1=value1,KEY2=value2}
-
+      - echo "DONE!!"
   test:
     commands:
       - echo "Running tests..."
-      - python test_script.py
-
-  post_deploy:
-    commands:
-      - echo "Running post-deployment tasks..."
-      - python post_deploy_script.py
-      - echo "Deployment completed successfully!"
-
+      - python test.py
