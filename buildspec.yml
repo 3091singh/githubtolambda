@@ -6,6 +6,7 @@ phases:
     commands:
       - echo "Installing dependencies..."
       - pip install -r requirements.txt -t lib
+
   build:
     commands:
       - echo "Zipping deployment package..."
@@ -13,8 +14,18 @@ phases:
       - zip -r9 ../deployment_package.zip .
       - cd ..
       - zip -g deployment_package.zip lambda_function.py
+
   post_build:
     commands:
-      - echo "Updating lambda Function..."
+      - echo "Running tests..."
+      - python test_script.py  # Add the actual command to run your tests
+      - echo "Zipping deployment package..."
+      - cd lib
+      - zip -r9 ../deployment_package.zip .
+      - cd ..
+      - zip -g deployment_package.zip lambda_function.py
+      - echo "Updating Lambda environment variables..."
+      - aws lambda update-function-configuration --function-name githubtolambda --environment Variables={KEY1=value1,KEY2=value2}
+      - echo "Deploying to AWS Lambda..."
       - aws lambda update-function-code --function-name githubtolambda --zip-file fileb://deployment_package.zip
       - echo "DONE!!"
