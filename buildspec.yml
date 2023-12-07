@@ -20,6 +20,16 @@ phases:
       - echo "Manual approval needed. Please approve in the AWS CodeBuild console."
       - sleep 30  # Wait for 30 seconds (adjust as needed)
 
+  post_build:
+    commands:
+      - echo "Updating Lambda Function..."
+      - aws lambda update-function-code --function-name githubtolambda --zip-file fileb://deployment_package.zip
+      - echo "DONE!!"
+      
+      # Additional custom actions
+      - echo "Running additional custom actions..."
+      - aws sns publish --topic-arn <your-topic-arn> --message "Deployment successful. Notify the team."
+
   test:
     commands:
       - echo "Running unit tests..."
@@ -51,11 +61,6 @@ phases:
       - echo "Performing canary deployment..."
       - # Implement your canary deployment strategy here
 
-  notify_team:
-    commands:
-      - echo "Notifying the team about the deployment..."
-      - # Implement notification mechanism, e.g., sending an email or a message to a communication channel
-
   deploy_to_production:
     commands:
       - echo "Deploying to production..."
@@ -80,9 +85,3 @@ phases:
     commands:
       - echo "Cleaning up resources..."
       - aws cloudformation delete-stack --stack-name my-stack
-
-  post_build:
-    commands:
-      - echo "Updating Lambda Function..."
-      - aws lambda update-function-code --function-name githubtolambda --zip-file fileb://deployment_package.zip
-      - echo "DONE!!"
