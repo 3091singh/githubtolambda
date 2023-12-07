@@ -7,6 +7,12 @@ phases:
       - echo "Installing dependencies..."
       - pip install -r requirements.txt -t lib
 
+  pre_build:
+    commands:
+      - echo "Running security scans..."
+      - bandit -r .
+      - safety check
+
   build:
     commands:
       - echo "Zipping deployment package..."
@@ -34,12 +40,6 @@ phases:
     commands:
       - echo "Running unit tests..."
       - pytest tests/
-
-  security_scan:
-    commands:
-      - echo "Running security scans..."
-      - bandit -r .
-      - safety check
 
   deploy_infrastructure:
     commands:
