@@ -77,13 +77,3 @@ phases:
     commands:
       - echo "Rolling back deployment..."
       # Add commands for rollback steps
-
-  monitor_and_log:
-    commands:
-      - echo "Monitoring and logging..."
-      - aws cloudwatch put-metric-data --metric-name PipelineSuccess --value 1
-
-  cleanup_resources:
-    commands:
-      - echo "Cleaning up resources..."
-      - aws cloudformation delete-stack --stack-name my-stack
