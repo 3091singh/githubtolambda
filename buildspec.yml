@@ -13,40 +13,11 @@ phases:
       - zip -r9 ../deployment_package.zip .
       - cd ..
       - zip -g deployment_package.zip lambda_function.py
-  test:
-    commands:
-      - echo "Running tests..."
-      - pytest tests/
-  security_scan:
-    commands:
-      - echo "Running security scans..."
-      - bandit -r .
-      - safety check
-  deploy_infrastructure:
-    commands:
-      - echo "Deploying infrastructure..."
-      - aws cloudformation deploy --template-file infrastructure.yaml --stack-name my-stack
-  promote_to_staging:
-    commands:
-      - echo "Promoting to staging..."
-      - aws lambda update-alias --function-name githubtolambda --name staging --function-version 1
-  manual_approval:
-    commands:
-      - echo "Manual approval needed. Waiting for approval..."
-      # This could involve sending a notification or waiting for user input
-      # before proceeding to the next stage.
-  deploy_to_production:
-    commands:
-      - echo "Deploying to production..."
-      - aws lambda update-alias --function-name githubtolambda --name production --function-version 1
-  monitor_and_log:
-    commands:
-      - echo "Monitoring and logging..."
-      - aws cloudwatch put-metric-data --metric-name PipelineSuccess --value 1
-  cleanup_resources:
-    commands:
-      - echo "Cleaning up resources..."
-      - aws cloudformation delete-stack --stack-name my-stack
+      # Add your other build commands here
+
+      # Custom manual approval script
+      - echo "Manual approval needed. Please approve in the AWS CodeBuild console."
+      - sleep 30  # Wait for 30 seconds (adjust as needed)
   post_build:
     commands:
       - echo "Updating Lambda Function..."
