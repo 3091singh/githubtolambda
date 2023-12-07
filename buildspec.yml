@@ -36,6 +36,10 @@ phases:
       - echo "Running additional custom actions..."
       - aws sns publish --topic-arn <your-topic-arn> --message "Deployment successful. Notify the team."
 
+      # Verification steps can be added here
+      - echo "Verifying deployment..."
+      # Add commands for deployment verification
+
   test:
     commands:
       - echo "Running unit tests..."
@@ -68,11 +72,6 @@ phases:
     commands:
       - echo "Deploying to production..."
       - aws lambda update-alias --function-name githubtolambda --name production --function-version 1
-
-  verify_deployment:
-    commands:
-      - echo "Verifying deployment..."
-      # Add commands for deployment verification
 
   rollback:
     commands:
