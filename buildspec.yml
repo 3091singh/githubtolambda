@@ -41,6 +41,9 @@ phases:
       - echo "Running unit tests..."
       - pytest tests/
 
+      # Additional test commands can be added here
+      - echo "Running additional tests..."
+
   deploy_infrastructure:
     commands:
       - echo "Deploying infrastructure..."
@@ -59,7 +62,7 @@ phases:
   canary_deployment:
     commands:
       - echo "Performing canary deployment..."
-      - # Implement your canary deployment strategy here
+      # Add commands for canary deployment
 
   deploy_to_production:
     commands:
@@ -69,12 +72,12 @@ phases:
   verify_deployment:
     commands:
       - echo "Verifying deployment..."
-      - # Implement deployment verification steps
+      # Add commands for deployment verification
 
   rollback:
     commands:
       - echo "Rolling back deployment..."
-      - # Implement rollback steps in case of deployment failure
+      # Add commands for rollback steps
 
   monitor_and_log:
     commands:
