@@ -6,6 +6,7 @@ phases:
     commands:
       - echo "Installing dependencies..."
       - pip install -r requirements.txt -t lib
+
   build:
     commands:
       - echo "Zipping deployment package..."
@@ -18,6 +19,68 @@ phases:
       # Custom manual approval script
       - echo "Manual approval needed. Please approve in the AWS CodeBuild console."
       - sleep 30  # Wait for 30 seconds (adjust as needed)
+
+  test:
+    commands:
+      - echo "Running unit tests..."
+      - pytest tests/
+
+  security_scan:
+    commands:
+      - echo "Running security scans..."
+      - bandit -r .
+      - safety check
+
+  deploy_infrastructure:
+    commands:
+      - echo "Deploying infrastructure..."
+      - aws cloudformation deploy --template-file infrastructure.yaml --stack-name my-stack
+
+  promote_to_staging:
+    commands:
+      - echo "Promoting to staging..."
+      - aws lambda update-alias --function-name githubtolambda --name staging --function-version 1
+
+  integration_test:
+    commands:
+      - echo "Running integration tests..."
+      - pytest integration_tests/
+
+  canary_deployment:
+    commands:
+      - echo "Performing canary deployment..."
+      - # Implement your canary deployment strategy here
+
+  notify_team:
+    commands:
+      - echo "Notifying the team about the deployment..."
+      - # Implement notification mechanism, e.g., sending an email or a message to a communication channel
+
+  deploy_to_production:
+    commands:
+      - echo "Deploying to production..."
+      - aws lambda update-alias --function-name githubtolambda --name production --function-version 1
+
+  verify_deployment:
+    commands:
+      - echo "Verifying deployment..."
+      - # Implement deployment verification steps
+
+  rollback:
+    commands:
+      - echo "Rolling back deployment..."
+      - # Implement rollback steps in case of deployment failure
+
+  monitor_and_log:
+    commands:
+      - echo "Monitoring and logging..."
+      - aws cloudwatch put-metric-data --metric-name PipelineSuccess --value 1
+
+  cleanup_resources:
+    commands:
+      - echo "Cleaning up resources..."
+      - aws cloudformation delete-stack --stack-name my-stack
+
   post_build:
     commands:
       - echo "Updating Lambda Function..."
