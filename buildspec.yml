@@ -9,10 +9,10 @@ phases:
 
 
   pre_build:
-    commands:
-      - echo "Running security scans..."
-      - bandit -r .
-      - safety check
+  commands:
+    - echo "Running security scans..."
+    - /path/to/bandit -r .
+    - safety check
 
   build:
     commands:
