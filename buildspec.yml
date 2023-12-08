@@ -8,11 +8,10 @@ phases:
       - pip install bandit
       - echo "Installing dependencies..."
 
-   pre_build:
-  commands:
-    - echo "Running security scans..."
-    - bandit -r ~/Desktop/project
-
+  pre_build:
+    commands:
+      - echo "Running security scans..."
+      - bandit -r ~/Desktop/project
 
   build:
     commands:
