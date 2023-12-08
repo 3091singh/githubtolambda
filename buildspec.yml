@@ -1,11 +1,12 @@
 version: 0.2
 phases:
-  install:
-    runtime-versions:
-      python: 3.8
-    commands:
-      - echo "Installing dependencies..."
-      - pip install -r requirements.txt -t lib
+      install:
+  runtime-versions:
+    python: 3.8
+  commands:
+    - pip install -r requirements.txt -t lib
+    - pip install bandit
+
 
   pre_build:
     commands:
