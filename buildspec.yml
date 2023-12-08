@@ -1,18 +1,18 @@
 version: 0.2
 phases:
-      install:
-  runtime-versions:
-    python: 3.8
-  commands:
-    - pip install -r requirements.txt -t lib
-    - pip install bandit
-
+  install:
+    runtime-versions:
+      python: 3.8
+    commands:
+      - pip install -r requirements.txt -t lib
+      - pip install bandit
+      - echo "Installing dependencies..."
 
   pre_build:
-  commands:
-    - echo "Running security scans..."
-    - /path/to/bandit -r .
-    - safety check
+    commands:
+      - echo "Running security scans..."
+      - /path/to/bandit -r .
+      - safety check
 
   build:
     commands:
