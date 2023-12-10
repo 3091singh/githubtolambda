@@ -1,4 +1,4 @@
-version: 0.2
+tioversion: 0.2
 phases:
  install:
   runtime-versions:
@@ -18,9 +18,9 @@ phases:
 build:
   commands:
     - echo "Building documentation..."
-    - cd /path/to/your/project/docs
+    - cd /path/to/your/project/documentation
     - sphinx-build -b html . _build/
-    - cd /path/to/your/project
+    - cd /Users/satwindersingh/Desktop
     - echo "Running additional build tasks..."
     # Add more build commands here
 
