@@ -21,7 +21,6 @@ phases:
       - cd /Users/satwindersingh/Desktop/project/documentation
       - sphinx-build -b html . _build/
       - echo "Running additional build tasks..."
-      # Add more build commands here
 
   post_build:
     commands:
