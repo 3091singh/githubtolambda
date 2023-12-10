@@ -1,27 +1,27 @@
 version: 0.2
 phases:
-install:
-  runtime-versions:
-    python: 3.8
-  commands:
-    - pip install -r requirements.txt -t lib
-    - pip install bandit
-    - pip install sphinx==Sphinx v7.2.6
-    - echo "Installing dependencies..."
+  install:
+    runtime-versions:
+      python: 3.8
+    commands:
+      - pip install -r requirements.txt -t lib
+      - pip install bandit
+      - pip install sphinx
+      - pip install <any_missing_dependency>
+      - echo "Installing dependencies..."
 
   pre_build:
     commands:
       - echo "Running security scans..."
       - bandit -r ~/Desktop/project
 
- build:
-  commands:
-    - echo "Building documentation..."
-   - cd /Users/satwindersingh/Desktop/project/documentation
-    - sphinx-build -b html . _build/
-    - echo "Running additional build tasks..."
-    # Add more build commands here
-
+  build:
+    commands:
+      - echo "Building documentation..."
+      - cd /Users/satwindersingh/Desktop/project/documentation
+      - sphinx-build -b html . _build/
+      - echo "Running additional build tasks..."
+      # Add more build commands here
 
   post_build:
     commands:
