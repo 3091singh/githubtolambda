@@ -1,32 +1,29 @@
 version: 0.2
 phases:
-  install:
-    runtime-versions:
-      python: 3.8
-    commands:
-      - pip install -r requirements.txt -t lib
-      - pip install bandit
-      - pip install sphinx
-      - echo "Installing dependencies..."
+ install:
+  runtime-versions:
+    python: 3.8
+  commands:
+    - pip install -r requirements.txt -t lib
+    - pip install bandit
+    - pip install sphinx
+    - pip install <any_missing_dependency>
+    - echo "Installing dependencies..."
 
   pre_build:
     commands:
       - echo "Running security scans..."
       - bandit -r ~/Desktop/project
 
-  build:
-    commands:
-      - echo "Zipping deployment package..."
-      - cd lib
-      - zip -r9 ../deployment_package.zip .
-      - cd ..
-      - zip -g deployment_package.zip lambda_function.py
-      - echo "Building documentation..."
-      - cd docs
-      - sphinx-build -b html . _build/
-      - cd ..
-      - echo "Running additional build tasks..."
-      # Add more build commands here
+build:
+  commands:
+    - echo "Building documentation..."
+    - cd /path/to/your/project/docs
+    - sphinx-build -b html . _build/
+    - cd /path/to/your/project
+    - echo "Running additional build tasks..."
+    # Add more build commands here
+
 
   post_build:
     commands:
