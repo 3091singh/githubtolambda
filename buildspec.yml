@@ -18,7 +18,7 @@ phases:
 build:
   commands:
     - echo "Building documentation..."
-    - cd /path/to/your/project/documentation
+    - cd /desktop/project/documentation
     - sphinx-build -b html . _build/
     - cd /Users/satwindersingh/Desktop
     - echo "Running additional build tasks..."
