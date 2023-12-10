@@ -1,14 +1,14 @@
 version: 0.2
 phases:
-  install:
-    runtime-versions:
-      python: 3.8
-    commands:
-      - pip install -r requirements.txt -t lib
-      - pip install bandit
-      - pip install sphinx
-      - pip install awscli
-      - echo "Installing dependencies..."
+ install:
+  runtime-versions:
+    python: 3.8
+  commands:
+    - pip install -r requirements.txt -t lib
+    - pip install bandit
+    -pip install sphinx==3.5.4
+    - pip install awscli
+    - echo "Installing dependencies..."
 
   pre_build:
     commands:
