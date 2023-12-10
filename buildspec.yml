@@ -17,7 +17,7 @@ install:
  build:
   commands:
     - echo "Building documentation..."
-    - cd /Users/satwindersingh/Desktop/project/documentation
+   - cd /Users/satwindersingh/Desktop/project/documentation
     - sphinx-build -b html . _build/
     - echo "Running additional build tasks..."
     # Add more build commands here
