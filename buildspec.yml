@@ -7,7 +7,7 @@ phases:
       - pip install -r requirements.txt -t lib
       - pip install bandit
       - pip install sphinx
-      - pip install <any_missing_dependency>
+      - pip install awscli
       - echo "Installing dependencies..."
 
   pre_build:
@@ -21,6 +21,7 @@ phases:
       - cd /Users/satwindersingh/Desktop/project/documentation
       - sphinx-build -b html . _build/
       - echo "Running additional build tasks..."
+      # Add more build commands here
 
   post_build:
     commands:
@@ -45,6 +46,8 @@ phases:
       # Add commands for rollback steps
       - echo "Archiving build artifacts..."
       - aws s3 cp deployment_package.zip s3://your-artifact-bucket/
+      - echo "Uploading CSV file to S3..."
+      - aws s3 cp yourfile.csv s3://your-s3-bucket/
       - echo "Notifying team about build completion..."
       - send_notification_command_here
       - echo "Running additional post-build tasks..."
