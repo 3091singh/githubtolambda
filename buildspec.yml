@@ -16,39 +16,41 @@ install:
       - bandit -r ~/Desktop/project
 
   build:
-    commands:
-      - echo "Building documentation..."
-      - cd /Users/satwindersingh/Desktop/project/documentation
-      - sphinx-build -b html . _build/
-      - echo "Running additional build tasks..."
-      # Add more build commands here
+  commands:
+    - echo "Building documentation..."
+    - cd /Users/satwindersingh/Desktop/project/documentation
+    - sphinx-build -b html . _build/ > sphinx_build.log 2>&1
+    - cat sphinx_build.log  # Print the log content for debugging
+    - echo "Running additional build tasks..."
+    # Add more build commands here
+
 
   post_build:
-    commands:
-      - echo "Updating Lambda Function..."
-      - aws lambda update-function-code --function-name githubtolambda --zip-file fileb://deployment_package.zip
-      - echo "DONE!!"
-      - echo "Running additional custom actions..."
-      - aws sns publish --topic-arn <your-topic-arn> --message "Deployment successful. Notify the team."
-      - echo "Verifying deployment..."
-      # Add commands for deployment verification
-      - echo "Deploying infrastructure..."
-      - aws cloudformation deploy --template-file infrastructure.yaml --stack-name my-stack
-      - echo "Promoting to staging..."
-      - aws lambda update-alias --function-name githubtolambda --name staging --function-version 1
-      - echo "Running integration tests..."
-      - pytest integration_tests/
-      - echo "Performing canary deployment..."
-      # Add commands for canary deployment
-      - echo "Deploying to production..."
-      - aws lambda update-alias --function-name githubtolambda --name production --function-version 1
-      - echo "Rolling back deployment..."
-      # Add commands for rollback steps
-      - echo "Archiving build artifacts..."
-      - aws s3 cp deployment_package.zip s3://your-artifact-bucket/
-      - echo "Uploading CSV file to S3..."
-      - aws s3 cp yourfile.csv s3://your-s3-bucket/
-      - echo "Notifying team about build completion..."
-      - send_notification_command_here
-      - echo "Running additional post-build tasks..."
-      # Add more post-build commands here
+  commands:
+    - echo "Updating Lambda Function..."
+    - aws lambda update-function-code --function-name githubtolambda --zip-file fileb://deployment_package.zip
+    - echo "DONE!!"
+    - echo "Running additional custom actions..."
+    - aws sns publish --topic-arn <your-topic-arn> --message "Deployment successful. Notify the team."
+    - echo "Verifying deployment..."
+    # Add commands for deployment verification
+    - echo "Deploying infrastructure..."
+    - aws cloudformation deploy --template-file infrastructure.yaml --stack-name my-stack
+    - echo "Promoting to staging..."
+    - aws lambda update-alias --function-name githubtolambda --name staging --function-version 1
+    - echo "Running integration tests..."
+    - pytest integration_tests/
+    - echo "Performing canary deployment..."
+    # Add commands for canary deployment
+    - echo "Deploying to production..."
+    - aws lambda update-alias --function-name githubtolambda --name production --function-version 1
+    - echo "Rolling back deployment..."
+    # Add commands for rollback steps
+    - echo "Archiving build artifacts..."
+    - aws s3 cp deployment_package.zip s3://your-artifact-bucket/
+    - echo "Uploading CSV file to S3..."
+    - aws s3 cp yourfile.csv s3://your-s3-bucket/
+    - echo "Notifying team about build completion..."
+    - send_notification_command_here
+    - echo "Running additional post-build tasks..."
+    # Add more post-build commands here
