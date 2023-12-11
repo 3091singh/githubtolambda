@@ -20,7 +20,7 @@ phases:
       - bandit -r /Users/satwindersingh/Desktop/project  # Update the path to your project
       - echo "Security scans completed."
 
-build:
+  build:
     commands:
       - echo "Zipping deployment package..."
       - cd lib
@@ -52,12 +52,4 @@ build:
       - echo "Deploying to production..."
       - aws lambda update-alias --function-name githubtolambda --name production --function-version 1
       - echo "Lambda function deployed to production."
-      - echo "Rolling back deployment..."
-      # Add commands for rollback steps
-      - echo "Archiving build artifacts..."
-      - aws s3 cp deployment_package.zip s3://your-artifact-bucket/
-      - echo "Build artifacts archived."
-      - echo "Uploading CSV file to S3..."
-      - aws s3 cp yourfile.csv s3://your-s3-bucket/
-      - echo "CSV file uploaded to S3."
-      - echo "Notifying team about build completion
+      - echo "Rolling 
