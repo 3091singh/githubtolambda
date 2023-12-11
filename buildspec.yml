@@ -20,15 +20,9 @@ phases:
       - bandit -r /Users/satwindersingh/Desktop/project  # Update the path to your project
       - echo "Security scans completed."
 
-  build:
+build:
     commands:
-      - echo "Building documentation..."
-      - cd /Users/satwindersingh/Desktop/project/documentation
-      - sphinx-build -b html . _build/ > sphinx_build.log 2>&1
-      - cat sphinx_build.log  # Print the log content for debugging
-      - echo "Running additional build tasks..."
-      # Add more build commands here
-      - echo "Zipping deployment package for lambda function..."
+      - echo "Zipping deployment package..."
       - cd lib
       - zip -r9 ../deployment_package.zip .
       - cd ..
