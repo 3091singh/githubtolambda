@@ -1,14 +1,14 @@
 version: 0.2
 phases:
-install:
-  runtime-versions:
-    python: 3.8
-  commands:
-    - pip install -r requirements.txt -t lib
-    - pip install bandit
-    - pip install sphinx==3.5.4
-    - pip install awscli
-    - echo "Installing dependencies..."
+  install:
+    runtime-versions:
+      python: 3.8
+    commands:
+      - pip install -r requirements.txt -t lib
+      - pip install bandit
+      - pip install sphinx==3.5.4
+      - pip install awscli
+      - echo "Installing dependencies..."
 
   pre_build:
     commands:
@@ -29,7 +29,7 @@ install:
       - aws lambda update-function-code --function-name githubtolambda --zip-file fileb://deployment_package.zip
       - echo "DONE!!"
       - echo "Running additional custom actions..."
-      - aws sns publish --topic-arn <your-topic-arn> --message "Deployment successful. Notify the team."
+      - aws sns publish --topic-arn arn:aws:sns:us-east-1:your-topic-arn --message "Deployment successful. Notify the team."
       - echo "Verifying deployment..."
       # Add commands for deployment verification
       - echo "Deploying infrastructure..."
@@ -51,4 +51,4 @@ install:
       - echo "Notifying team about build completion..."
       - send_notification_command_here
       - echo "Running additional post-build tasks..."
-      # Add more post-build commands hereBUILD	
+      # Add more post-build commands here
