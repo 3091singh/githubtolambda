@@ -31,7 +31,7 @@ phases:
       - aws lambda update-function-code --function-name githubtolambda --zip-file fileb://deployment_package.zip
       - echo "Lambda function updated."
       - echo "Running additional custom actions..."
-      - aws sns publish --topic-arn "arn:aws:sns:us-east-1:708915899842:YourTopicName" --message "Deployment successful. Notify the team."
+      - aws sns publish --topic-arn arn:aws:sns:us-east-1:708915899842:Test --message "Deployment successful. Notify the team."
       - echo "AWS SNS notification sent."
       - echo "Verifying deployment..."
       # Add commands for deployment verification
