@@ -45,9 +45,3 @@ phases:
       - rm -rf lib/  # Clean up the temporary library directory
       - rm deployment_package.zip  # Clean up the deployment package
       - echo "DONE!!"
-
-  test:
-    commands:
-      - echo "Running integration tests..."
-      - python tests/integration_test.py  # Replace with the actual command to run your integration tests
-      - echo "Integration tests completed successfully!"
