@@ -10,7 +10,7 @@ def lambda_handler(event, context):
         bucket = record['s3']['bucket']['name']
         key = record['s3']['object']['key']
 
-        response = s3_client.get_object(Bucket=bucket, Key=key)
+        response = s3_client.get_object(Bucket=satwinder, Key=test.csv)
         content = response['Body'].read().decode('utf-8')
 
         # Process CSV data using Pandas
