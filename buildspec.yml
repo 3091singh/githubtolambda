@@ -15,18 +15,34 @@ phases:
       - cd ..
       - zip -g deployment_package.zip lambda_function.py
 
-  upload_csv:
-    commands:
-      - echo "Uploading test.csv file to S3..."
-      - aws s3 cp path/to/your/local/test.csv s3://your_bucket_name/your_test_file.csv
+      # Additional build steps
+      - echo "Running unit tests..."
+      - python -m unittest discover tests/
 
-  invoke_lambda:
+  pre_deploy:
     commands:
-      - echo "Invoking Lambda function to process the CSV file..."
-      - aws lambda invoke --function-name githubtolambda --payload '{"bucket": "your_bucket_name", "key": "your_test_file.csv"}' output.txt
+      - echo "Linting code..."
+      - pylint lambda_function.py
+      - echo "Running security scan..."
+      - bandit -r lambda_function.py
+
+  deploy_staging:
+    commands:
+      - echo "Deploying to staging environment..."
+      - aws lambda update-function-code --function-name githubtolambda-staging --zip-file fileb://deployment_package.zip
+      - aws lambda publish-version --function-name githubtolambda-staging
+      - echo "Staging deployment completed."
+
+  deploy_production:
+    commands:
+      - echo "Deploying to production environment..."
+      - aws lambda update-function-code --function-name githubtolambda-production --zip-file fileb://deployment_package.zip
+      - aws lambda publish-version --function-name githubtolambda-production
+      - echo "Production deployment completed."
 
   post_build:
     commands:
-      - echo "Updating Lambda Function..."
-      - aws lambda update-function-code --function-name githubtolambda --zip-file fileb://deployment_package.zip
-      - echo "DONE!!"
+      - echo "Cleaning up..."
+      - rm -rf lib/  # Clean up the temporary library directory
+      - rm deployment_package.zip  # Clean up the deployment package
+      - echo "Cleanup completed."
