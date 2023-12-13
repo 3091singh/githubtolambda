@@ -7,10 +7,12 @@ def lambda_handler(event, context):
     s3_client = boto3.client('s3')
 
     for record in event['Records']:
+        # Extract bucket and key from S3 event record
         bucket = record['s3']['bucket']['name']
         key = record['s3']['object']['key']
 
-        response = s3_client.get_object(Bucket=satwinder, Key=test.csv)
+        # Use the extracted bucket and key in get_object
+        response = s3_client.get_object(Bucket=bucket, Key=key)
         content = response['Body'].read().decode('utf-8')
 
         # Process CSV data using Pandas
@@ -21,4 +23,4 @@ def lambda_handler(event, context):
     return {
         'statusCode': 200,
         'body': 'CSV processing completed successfully.'
- 
+    }
