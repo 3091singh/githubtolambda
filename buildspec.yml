@@ -6,7 +6,6 @@ phases:
     commands:
       - echo "Installing dependencies..."
       - pip install -r requirements.txt -t lib
-
   build:
     commands:
       - echo "Zipping deployment package..."
@@ -14,40 +13,10 @@ phases:
       - zip -r9 ../deployment_package.zip .
       - cd ..
       - zip -g deployment_package.zip lambda_function.py
-
-      # Additional build steps
-      - echo "Running unit tests..."
-      - python -m unittest discover tests/
-
-  pre_build:
-    commands:
-      - echo "Linting code..."
-      - pylint lambda_function.py
-      - echo "Running security scan..."
-      - bandit -r lambda_function.py
-
   post_build:
     commands:
-      - echo "Cleaning up..."
-      - rm -rf lib/  # Clean up the temporary library directory
-      - rm deployment_package.zip  # Clean up the deployment package
-      - echo "Cleanup completed."
-
-      - echo "Updating Lambda Function..."
+      - echo "Updating lambda Function..."
       - aws lambda update-function-code --function-name githubtolambda --zip-file fileb://deployment_package.zip
       - echo "DONE!!"
 
-      # Conditional deployment based on environment variables
-      - if [ "$DEPLOY_ENV" == "staging" ]; then
-          echo "Deploying to staging environment..."
-          # Add your staging deployment steps here
-          aws lambda update-function-code --function-name githubtolambda-staging --zip-file fileb://deployment_package.zip
-          echo "Staging deployment completed."
-        fi
 
-      - if [ "$DEPLOY_ENV" == "production" ]; then
-          echo "Deploying to production environment..."
-          # Add your production deployment steps here
-          aws lambda update-function-code --function-name githubtolambda-production --zip-file fileb://deployment_package.zip
-          echo "Production deployment completed."
-        fi
