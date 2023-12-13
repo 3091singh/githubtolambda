@@ -16,7 +16,7 @@ phases:
       
       # Add the S3 upload step here
       - echo "Uploading test.csv file to S3..."
-      - aws s3 cp test.csv s3://satwinder/test.csv
+      - aws s3 cp path/to/your/local/test.csv s3://your_bucket_name/your_test_file.csv  # Replace with the actual path to your local test.csv file
   post_build:
     commands:
       - echo "Updating lambda Function..."
