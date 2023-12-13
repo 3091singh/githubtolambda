@@ -6,6 +6,7 @@ phases:
     commands:
       - echo "Installing dependencies..."
       - pip install -r requirements.txt -t lib
+
   build:
     commands:
       - echo "Zipping deployment package..."
@@ -13,8 +14,16 @@ phases:
       - zip -r9 ../deployment_package.zip .
       - cd ..
       - zip -g deployment_package.zip lambda_function.py
+
   post_build:
     commands:
       - echo "Updating lambda Function..."
       - aws lambda update-function-code --function-name githubtolambda --zip-file fileb://deployment_package.zip
       - echo "DONE!!"
+
+  test:
+    commands:
+      - echo "Running tests..."
+      - aws s3 cp s3://your_bucket_name/your_test_file.csv .  # Download test CSV file from S3
+      - python tests/test_lambda_function.py  # Replace with the actual command to run your tests
+      - echo "Tests completed successfully!"
