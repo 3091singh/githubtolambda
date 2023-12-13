@@ -6,19 +6,49 @@ phases:
     commands:
       - echo "Installing dependencies..."
       - pip install -r requirements.txt -t lib
+
+  pre_build:
+    commands:
+      - echo "Running linters..."
+      - pylint lambda_function.py
+      - flake8 lambda_function.py
+
   build:
     commands:
+      - echo "Running unit tests..."
+      - python -m unittest discover tests/
       - echo "Zipping deployment package..."
       - cd lib
-      - zip -r9 ../deployment_package.zip .
+      - zip -r9 "../deployment_package_$(date +"%Y%m%d%H%M%S").zip" .
       - cd ..
       - zip -g deployment_package.zip lambda_function.py
       
       # Add the S3 upload step here
       - echo "Uploading test.csv file to S3..."
       - aws s3 cp path/to/your/local/test.csv s3://your_bucket_name/your_test_file.csv  # Replace with the actual path to your local test.csv file
+
   post_build:
     commands:
-      - echo "Updating lambda Function..."
-      - aws lambda update-function-code --function-name githubtolambda --zip-file fileb://deployment_package.zip
+      - echo "Running security scan..."
+      - bandit -r lambda_function.py
+
+      - echo "Running integration tests..."
+      - python tests/integration_test.py  # Replace with the actual command to run your integration tests
+
+      - echo "Deploying to different environments based on branch..."
+      - |
+        if [ "$CODEBUILD_WEBHOOK_EVENT" == "PULL_REQUEST_MERGED" ]; then
+          aws lambda update-function-code --function-name githubtolambda-prod --zip-file fileb://deployment_package.zip
+          aws lambda publish-version --function-name githubtolambda-prod
+        elif [ "$CODEBUILD_WEBHOOK_EVENT" == "PUSH" ] && [ "$CODEBUILD_SOURCE_BRANCH" == "main" ]; then
+          aws lambda update-function-code --function-name githubtolambda-staging --zip-file fileb://deployment_package.zip
+          aws lambda publish-version --function-name githubtolambda-staging
+        elif [ "$CODEBUILD_WEBHOOK_EVENT" == "PUSH" ] && [ "$CODEBUILD_SOURCE_BRANCH" == "develop" ]; then
+          aws lambda update-function-code --function-name githubtolambda-dev --zip-file fileb://deployment_package.zip
+          aws lambda publish-version --function-name githubtolambda-dev
+        fi
+
+      - echo "Cleaning up..."
+      - rm -rf lib/  # Clean up the temporary library directory
+      - rm deployment_package.zip  # Clean up the deployment package
       - echo "DONE!!"
