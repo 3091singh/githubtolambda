@@ -6,6 +6,7 @@ phases:
     commands:
       - echo "Installing dependencies..."
       - pip install -r requirements.txt -t lib
+
   build:
     commands:
       - echo "Zipping deployment package..."
@@ -13,8 +14,19 @@ phases:
       - zip -r9 ../deployment_package.zip .
       - cd ..
       - zip -g deployment_package.zip lambda_function.py
+
+  upload_csv:
+    commands:
+      - echo "Uploading test.csv file to S3..."
+      - aws s3 cp path/to/your/local/test.csv s3://your_bucket_name/your_test_file.csv
+
+  invoke_lambda:
+    commands:
+      - echo "Invoking Lambda function to process the CSV file..."
+      - aws lambda invoke --function-name githubtolambda --payload '{"bucket": "your_bucket_name", "key": "your_test_file.csv"}' output.txt
+
   post_build:
     commands:
-      - echo "Updating lambda Function..."
+      - echo "Updating Lambda Function..."
       - aws lambda update-function-code --function-name githubtolambda --zip-file fileb://deployment_package.zip
       - echo "DONE!!"
