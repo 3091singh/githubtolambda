@@ -24,7 +24,7 @@ phases:
     commands:
       - echo "Updating Lambda Function..."
       - set -x  # Enable debugging output
-      - aws lambda update-function-code --function-name your-lambda-function-name --zip-file fileb://deployment_package.zip
+      - aws lambda update-function-code --function-name githubtolambda --zip-file fileb://deployment_package.zip
       - set +x  # Disable debugging output
       - echo "DONE!!"
 
@@ -32,7 +32,7 @@ phases:
       - if [ "$DEPLOY_ENV" == "staging" ]; then
           echo "Deploying to staging environment..."
           set -x
-          aws lambda update-function-code --function-name your-lambda-function-name-staging --zip-file fileb://deployment_package.zip
+          aws lambda update-function-code --function-name githubtolambda-name-staging --zip-file fileb://deployment_package.zip
           set +x
           echo "Staging deployment completed."
         fi
@@ -40,7 +40,7 @@ phases:
       - if [ "$DEPLOY_ENV" == "production" ]; then
           echo "Deploying to production environment..."
           set -x
-          aws lambda update-function-code --function-name your-lambda-function-name-production --zip-file fileb://deployment_package.zip
+          aws lambda update-function-code --function-name githubtolambda-name-production --zip-file fileb://deployment_package.zip
           set +x
           echo "Production deployment completed."
         fi
