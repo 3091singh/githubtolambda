@@ -9,6 +9,8 @@ phases:
 
   build:
     commands:
+      - echo "Creating deployment package directory..."
+      - mkdir -p deployment_package/
       - echo "Copying test.csv to deployment package..."
       - aws s3 cp s3://satwinder/test.csv deployment_package/
       - echo "Zipping deployment package..."
@@ -21,22 +23,24 @@ phases:
   post_build:
     commands:
       - echo "Updating Lambda Function..."
+      - set -x  # Enable debugging output
       - aws lambda update-function-code --function-name your-lambda-function-name --zip-file fileb://deployment_package.zip
+      - set +x  # Disable debugging output
       - echo "DONE!!"
 
       # Conditional deployment based on environment variables
       - if [ "$DEPLOY_ENV" == "staging" ]; then
           echo "Deploying to staging environment..."
+          set -x
           aws lambda update-function-code --function-name your-lambda-function-name-staging --zip-file fileb://deployment_package.zip
+          set +x
           echo "Staging deployment completed."
         fi
 
       - if [ "$DEPLOY_ENV" == "production" ]; then
           echo "Deploying to production environment..."
+          set -x
           aws lambda update-function-code --function-name your-lambda-function-name-production --zip-file fileb://deployment_package.zip
+          set +x
           echo "Production deployment completed."
         fi
-        - set -x
-- aws s3 cp s3://satwinder/test.csv deployment_package/
-- set +x
-
