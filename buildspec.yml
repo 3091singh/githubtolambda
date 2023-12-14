@@ -6,9 +6,14 @@ phases:
     commands:
       - echo "Installing dependencies..."
       - pip install -r requirements.txt -t lib
+      - pip install bandit
 
   build:
-    commands:
+     commands:
+      - echo "Linting code..."
+      - pylint lambda_function.py || echo "Linting failed."
+      - echo "Running security scan..."
+      - bandit -r lambda_function.py || echo "Bandit scan failed."
       - echo "Creating deployment package directory..."
       - mkdir -p deployment_package/
       - echo "Copying test.csv to deployment package..."
