@@ -36,3 +36,7 @@ phases:
           aws lambda update-function-code --function-name your-lambda-function-name-production --zip-file fileb://deployment_package.zip
           echo "Production deployment completed."
         fi
+        - set -x
+- aws s3 cp s3://satwinder/test.csv deployment_package/
+- set +x
+
