@@ -12,7 +12,9 @@ phases:
       - echo "Creating deployment package directory..."
       - mkdir -p deployment_package/
       - echo "Copying test.csv to deployment package..."
+      - set -x  # Enable debugging output
       - aws s3 cp s3://satwinder/test.csv deployment_package/
+      - set +x  # Disable debugging output
       - echo "Zipping deployment package..."
       - zip -r9 deployment_package.zip deployment_package/
 
