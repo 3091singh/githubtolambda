@@ -9,8 +9,10 @@ phases:
 
   build:
     commands:
+      - echo "Copying test.csv to deployment package..."
+      - aws s3 cp s3://satwinder/test.csv deployment_package/
       - echo "Zipping deployment package..."
-      - zip -r9 deployment_package.zip lambda_function.py
+      - zip -r9 deployment_package.zip deployment_package/
 
       # Additional build steps
       - echo "Running unit tests..."
