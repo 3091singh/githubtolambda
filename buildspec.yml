@@ -24,8 +24,39 @@ phases:
 
   post_build:
     commands:
+      - echo "Linting code..."
+      - pylint lambda_function.py
+      - echo "Running security scan..."
+      - bandit -r lambda_function.py
+
+      - echo "Running dependency scanning..."
+      - pip install safety
+      - safety check
+
+      - echo "Running integration tests..."
+      - python -m unittest discover integration_tests/ -v
+
+      - echo "Versioning deployment package..."
+      - version=$(git describe --tags --abbrev=0)
+      - mv deployment_package.zip deployment_package_$version.zip
+
       - echo "Updating Lambda Function..."
       - set -x  # Enable debugging output
-      - aws lambda update-function-code --function-name githubtolambda --zip-file fileb://deployment_package.zip
+      - aws lambda update-function-code --function-name githubtolambda --zip-file fileb://deployment_package_$version.zip
       - set +x  # Disable debugging output
       - echo "DONE!!"
+
+      - if [ "$DEPLOY_ENV" == "staging" ]; then
+          echo "Deploying to staging environment..."
+          aws lambda update-function-code --function-name githubtolambda-staging --zip-file fileb://deployment_package_$version.zip
+          echo "Staging deployment completed."
+        fi
+
+      - if [ "$DEPLOY_ENV" == "production" ]; then
+          echo "Deploying to production environment..."
+          aws lambda update-function-code --function-name githubtolambda-production --zip-file fileb://deployment_package_$version.zip
+          echo "Production deployment completed."
+        fi
+
+      - echo "Sending notification..."
+      - # Add your notification logic here (e.g., sending an email, Slack message)
